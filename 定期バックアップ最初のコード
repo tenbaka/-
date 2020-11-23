@@ -1,0 +1,21 @@
+# バックアップのバックアップ先
+$back = "O:\OneDrive\minecraftバックアップ\"
+
+# 最新のバックアップファイルをフルパスで取得
+$pass = (Get-ChildItem I:\backup_f\ | Sort-Object LastWriteTime -Desc)[0].FullName
+
+# 一時保存先
+$tmp = "C:\TMP\"
+
+# Onedriveの一時保存先にコピー
+Copy $pass $tmp
+
+# 一時保存先からバックアップフォルダに移動
+Move-Item $tmp* $back
+
+# 14日前のファイルを削除する
+$DAYS = 14
+# $DAYS日前のファイルをフルパスで取得する
+$rmpass = (Get-ChildItem $back | Sort-Object LastWriteTime -Desc)[$DAYS].FullName
+# 取得したファイルを削除する
+Remove-Item $rmpass
